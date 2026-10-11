@@ -94,11 +94,12 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="he_IL">
 <meta property="og:site_name" content="{SITE_NAME}">
-<meta name="theme-color" content="#0b1b33">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f9f9f9">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
 {extra_head}
 </head>
@@ -106,7 +107,7 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <header class="topbar">
   <div class="wrap topbar-inner">
     <a class="brand" href="/" aria-label="Shasi – דף הבית">
-      <img src="/favicon.svg" alt="" width="32" height="32"><span>Shasi</span>
+      <img src="/logo.png" alt="" width="36" height="36"><span>SHASI</span>
     </a>
     <nav>
       <a href="/blog">מדריכים</a>
@@ -121,7 +122,7 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <footer class="footer">
   <div class="wrap footer-inner">
     <div>
-      <a class="brand" href="/"><img src="/favicon.svg" alt="" width="28" height="28"><span>Shasi</span></a>
+      <a class="brand" href="/"><img src="/logo.png" alt="" width="32" height="32"><span>SHASI</span></a>
       <p>תזכורות לטיפולים, טסט וביטוח – לפי מספר הרישוי.</p>
     </div>
     <nav>
@@ -203,41 +204,43 @@ def render_home(articles):
     body = f"""<section class="hero">
   <div class="wrap hero-inner">
     <div class="hero-text">
-      <span class="pill">חינם · לכל רכב בישראל</span>
+      <div class="wordmark"><img src="/logo.png" alt="" width="72" height="72"><span>SHASI</span></div>
       <h1>הרכב שלכם זוכר הכול.<br><em>עכשיו גם אתם.</em></h1>
       <p class="lead">מכניסים מספר רישוי, ו-Shasi בונה לוח טיפולים מותאם לדגם שלכם ושולחת תזכורת לפני כל טיפול, טסט וחידוש ביטוח.</p>
       <div id="download">{store_buttons()}</div>
+      <p class="hero-note">חינם · לכל רכב בישראל · הנתונים ממאגר משרד התחבורה</p>
     </div>
-    <div class="phone" aria-hidden="true">
-      <div class="phone-screen">
-        <div class="ps-head">
-          <span class="ps-plate">12-345-67</span>
-          <span class="ps-model">טויוטה קורולה 2019</span>
-        </div>
-        <div class="ps-item due"><span class="dot"></span><div><b>טיפול 60,000</b><small>בעוד 1,200 ק״מ</small></div></div>
-        <div class="ps-item"><span class="dot"></span><div><b>טסט שנתי</b><small>בעוד 23 ימים</small></div></div>
-        <div class="ps-item"><span class="dot"></span><div><b>ביטוח חובה</b><small>מתחדש במרץ</small></div></div>
-        <div class="ps-item ok"><span class="dot"></span><div><b>החלפת צמיגים</b><small>בוצע</small></div></div>
-      </div>
+    <div class="phones" aria-hidden="true">
+      <div class="phone back"><img src="/app-plate.jpg" alt="" loading="eager"></div>
+      <div class="phone front"><img src="/app-dashboard.jpg" alt="מסך הרכב באפליקציית Shasi: טסט, ביטוח, צמיגים, מצבר ולוח טיפולים" loading="eager"></div>
     </div>
   </div>
 </section>
 
-<section class="features wrap">
-  <div class="feature">
-    <div class="ficon">🔎</div>
-    <h3>לפי מספר רישוי</h3>
-    <p>בלי להקליד דגם ושנה. Shasi מזהה את הרכב ומתאימה את לוח הטיפולים.</p>
+<section class="showcase wrap">
+  <div class="show-row">
+    <div class="show-text">
+      <span class="step">1</span>
+      <h2>מכניסים מספר רישוי</h2>
+      <p>בלי להקליד דגם, שנה ומנוע. Shasi מושכת את פרטי הרכב ממאגר משרד התחבורה ומזהה בדיוק איזה רכב יש לכם.</p>
+    </div>
+    <div class="phone"><img src="/app-plate.jpg" alt="מסך הזנת מספר רישוי באפליקציית Shasi" loading="lazy"></div>
   </div>
-  <div class="feature">
-    <div class="ficon">🔔</div>
-    <h3>תזכורת בזמן</h3>
-    <p>התראה לפני טיפול, טסט וביטוח – לא ברגע האחרון.</p>
+  <div class="show-row reverse">
+    <div class="show-text">
+      <span class="step">2</span>
+      <h2>כל המועדים במסך אחד</h2>
+      <p>כמה ימים נשארו לטסט ולביטוח, מתי הוחלפו הצמיגים והמצבר, ומה הטיפול הבא. ירוק זה בסדר, אדום זה הזמן לטפל.</p>
+    </div>
+    <div class="phone"><img src="/app-dashboard.jpg" alt="מסך הרכב באפליקציית Shasi" loading="lazy"></div>
   </div>
-  <div class="feature">
-    <div class="ficon">📋</div>
-    <h3>היסטוריה במקום אחד</h3>
-    <p>כל הטיפולים שבוצעו, שמורים בטלפון. שימושי גם כשמוכרים את הרכב.</p>
+  <div class="show-row">
+    <div class="show-text">
+      <span class="step">3</span>
+      <h2>לוח טיפולים מותאם לרכב</h2>
+      <p>שמן, נוזל קירור, רצועות ותיבת הילוכים, כל אחד עם דד-ליין לפי ק"מ ולפי זמן. אפשר לעדכן ולהתאים לפי מה שהמוסך אמר.</p>
+    </div>
+    <div class="phone"><img src="/app-schedule.jpg" alt="לוח הטיפולים באפליקציית Shasi" loading="lazy"></div>
   </div>
 </section>
 
