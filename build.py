@@ -205,7 +205,7 @@ def render_home(articles):
   <div class="wrap hero-inner">
     <div class="hero-text">
       <div class="wordmark"><img src="/logo.png" alt="" width="72" height="72"><span>SHASI</span></div>
-      <h1>הרכב שלכם זוכר הכול.<br><em>עכשיו גם אתם.</em></h1>
+      <h1>כל מה שהרכב שלכם צריך,<br><em>באפליקציה אחת</em></h1>
       <p class="lead">מכניסים מספר רישוי, ו-Shasi בונה לוח טיפולים מותאם לדגם שלכם ושולחת תזכורת לפני כל טיפול, טסט וחידוש ביטוח.</p>
       <div id="download">{store_buttons()}</div>
       <p class="hero-note">חינם · לכל רכב בישראל · הנתונים ממאגר משרד התחבורה</p>
