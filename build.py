@@ -125,7 +125,7 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
   <div class="wrap footer-inner">
     <div>
       <a class="brand" href="/"><img src="/logo.png" alt="" width="32" height="32"><span>SHASI</span></a>
-      <p>תזכורות לטיפולים, טסט וביטוח – לפי מספר הרישוי.</p>
+      <p>שאסי – תזכורות לטיפולים, טסט וביטוח – לפי מספר הרישוי.</p>
     </div>
     <nav>
       <a href="/blog">מדריכים</a>
@@ -208,7 +208,7 @@ def render_home(articles):
     <div class="hero-text">
       <div class="wordmark"><img src="/logo.png" alt="" width="72" height="72"><span>SHASI</span></div>
       <h1>כל מה שהרכב שלכם צריך,<br><em>באפליקציה אחת</em></h1>
-      <p class="lead">מכניסים מספר רישוי, ו-Shasi בונה לוח טיפולים מותאם לדגם שלכם ושולחת תזכורת לפני כל טיפול, טסט וחידוש ביטוח.</p>
+      <p class="lead">מכניסים מספר רישוי, ו-Shasi (שאסי) בונה לוח טיפולים מותאם לדגם שלכם ושולחת תזכורת לפני כל טיפול, טסט וחידוש ביטוח.</p>
       <div id="download">{store_buttons()}</div>
       <p class="hero-note">חינם · לכל רכב בישראל · הנתונים ממאגר משרד התחבורה</p>
     </div>
@@ -265,12 +265,13 @@ def render_home(articles):
 </section>
 """
     ld = json.dumps({"@context": "https://schema.org", "@type": "MobileApplication",
-                     "name": SITE_NAME, "operatingSystem": "iOS, Android",
+                     "name": SITE_NAME, "alternateName": "שאסי",
+                     "operatingSystem": "iOS, Android",
                      "applicationCategory": "UtilitiesApplication",
                      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "ILS"}},
                     ensure_ascii=False)
-    return layout("Shasi – תזכורות לטיפולים, טסט וביטוח לפי מספר רישוי",
-                  "אפליקציה חינמית לניהול הרכב: לוח טיפולים מותאם לדגם לפי מספר רישוי, ותזכורות לטסט ולביטוח.",
+    return layout("Shasi (שאסי) – תזכורות לטיפולים, טסט וביטוח לפי מספר רישוי",
+                  "שאסי (Shasi) – אפליקציה חינמית לניהול הרכב: לוח טיפולים מותאם לדגם לפי מספר רישוי, ותזכורות לטסט ולביטוח.",
                   "/", body, f'<script type="application/ld+json">{ld}</script>')
 
 
@@ -288,16 +289,16 @@ def render_blog(articles):
 
 def render_about():
     body = f"""<section class="wrap narrow page-head">
-  <h1>על Shasi</h1>
+  <h1>על Shasi (שאסי)</h1>
   <div class="prose">
-    <p>Shasi נולדה מתוך תסכול פשוט: כמעט כל בעל רכב שכח פעם טיפול, גילה שהטסט פג רק כשעצר אותו שוטר, או שילם יותר על ביטוח כי לא השווה בזמן.</p>
+    <p>שאסי (Shasi) נולדה מתוך תסכול פשוט: כמעט כל בעל רכב שכח פעם טיפול, גילה שהטסט פג רק כשעצר אותו שוטר, או שילם יותר על ביטוח כי לא השווה בזמן.</p>
     <p>האפליקציה עושה דבר אחד וטוב: מכניסים מספר רישוי, והיא בונה לוח טיפולים מותאם לדגם ושולחת תזכורת לפני כל מועד חשוב – טיפול, טסט, ביטוח. היא חינמית לשימוש.</p>
     <p>במדריכים באתר אנחנו מסבירים בשפה פשוטה את מה שכל בעל רכב צריך לדעת. המידע כללי, ובכל מקרה של ספק כדאי לבדוק בספר הרכב, אצל היבואן או במוסך מורשה.</p>
     <p>שאלות, הצעות או שיתופי פעולה: <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a></p>
   </div>
   {cta_box()}
 </section>"""
-    return layout(f"על Shasi | {SITE_NAME}", "מי אנחנו ומה Shasi עושה: תזכורות לטיפולים, טסט וביטוח לפי מספר רישוי.", "/about", body)
+    return layout(f"על Shasi (שאסי) | {SITE_NAME}", "מי אנחנו ומה שאסי (Shasi) עושה: תזכורות לטיפולים, טסט וביטוח לפי מספר רישוי.", "/about", body)
 
 
 def render_privacy():
