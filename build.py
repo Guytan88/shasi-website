@@ -14,6 +14,7 @@ import re
 import shutil
 from datetime import date
 from pathlib import Path
+from urllib.parse import quote
 
 # ---------- הגדרות: עדכן כאן ----------
 SITE_URL = "https://shasi.co.il"  # הדומיין הסופי, בלי / בסוף
@@ -250,6 +251,16 @@ def render_home(articles):
     <a href="/blog">לכל המדריכים ←</a>
   </div>
   <div class="grid">{cards}</div>
+</section>
+
+<section class="wrap partners">
+  <div class="partners-box">
+    <div>
+      <h2>בואו לעבוד איתנו</h2>
+      <p>חברות ביטוח, טרייד-אין, חלפים וצמיגים ועוד – Shasi מגיעה לבעלי רכב בדיוק ברגע שהם מחפשים שירות לרכב שלהם. מתעניינים בפרסום בתשלום באפליקציה ובאתר?</p>
+    </div>
+    <a class="btn" href="mailto:{CONTACT_EMAIL}?subject={quote("פרסום בתשלום ב-Shasi")}">בואו נדבר</a>
+  </div>
 </section>
 """
     ld = json.dumps({"@context": "https://schema.org", "@type": "MobileApplication",
