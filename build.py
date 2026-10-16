@@ -88,6 +88,7 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(description)}">
+<meta name="google-site-verification" content="CywJvihHGLlhyb0uN-OGHKCgNbpAsrkANYx0iIL78e0" />
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="{og_type}">
 <meta property="og:title" content="{esc(title)}">
