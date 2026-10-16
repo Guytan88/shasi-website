@@ -17,7 +17,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 # ---------- הגדרות: עדכן כאן ----------
-SITE_URL = "https://shasi.co.il"  # הדומיין הסופי, בלי / בסוף
+SITE_URL = "https://www.shasi.co.il"  # הדומיין הסופי, בלי / בסוף
 SITE_NAME = "Shasi"
 APP_STORE_URL = "https://apps.apple.com/us/app/shasi/id6799770868"
 PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.shasi.app"
