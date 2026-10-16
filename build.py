@@ -259,7 +259,7 @@ def render_home(articles):
       <h2>בואו לעבוד איתנו</h2>
       <p>חברות ביטוח, טרייד-אין, חלפים וצמיגים ועוד – Shasi מגיעה לבעלי רכב בדיוק ברגע שהם מחפשים שירות לרכב שלהם. מתעניינים בפרסום בתשלום באפליקציה ובאתר?</p>
     </div>
-    <a class="btn" href="mailto:{CONTACT_EMAIL}?subject={quote("פרסום בתשלום ב-Shasi")}">בואו נדבר</a>
+    <a class="partners-email" href="mailto:{CONTACT_EMAIL}?subject={quote("פרסום בתשלום ב-Shasi")}">{CONTACT_EMAIL}</a>
   </div>
 </section>
 """
