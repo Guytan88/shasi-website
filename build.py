@@ -22,6 +22,9 @@ SITE_NAME = "Shasi"
 APP_STORE_URL = "https://apps.apple.com/us/app/shasi/id6799770868"
 PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.shasi.app"
 CONTACT_EMAIL = "shasi.contact@gmail.com"
+# מדריכים שמוצגים ראשונים בדף הבית (לפי חיפושים ב-Search Console)
+FEATURED = ["car-insurance-types-israel", "car-chassis-shasi-explained",
+            "motorcycle-oil-change-interval", "ev-home-charging-basics"]
 # ----------------------------------------
 
 ROOT = Path(__file__).parent
@@ -209,12 +212,15 @@ def render_article(a, by_slug):
 
 
 def render_home(articles):
-    cards = "".join(article_card(a) for a in articles[:6])
+    by_slug = {a["slug"]: a for a in articles}
+    home = [by_slug[s] for s in FEATURED if s in by_slug]
+    home += [a for a in articles if a not in home]
+    cards = "".join(article_card(a) for a in home[:6])
     body = f"""<section class="hero">
   <div class="wrap hero-inner">
     <div class="hero-text">
       <div class="wordmark"><img src="/logo.png" alt="" width="72" height="72"><span>SHASI</span></div>
-      <h1>כל מה שהרכב שלכם צריך,<br><em>באפליקציה אחת</em></h1>
+      <h1><span class="h1-brand">שאסי (Shasi) – אפליקציה לניהול הרכב</span>כל מה שהרכב שלכם צריך,<br><em>באפליקציה אחת</em></h1>
       <p class="lead">מכניסים מספר רישוי, ו-Shasi (שאסי) בונה לוח טיפולים מותאם לדגם שלכם ושולחת תזכורת לפני כל טיפול, טסט וחידוש ביטוח.</p>
       <div id="download">{store_buttons()}</div>
       <p class="hero-note">חינם · לכל רכב בישראל · הנתונים ממאגר משרד התחבורה</p>
@@ -271,12 +277,20 @@ def render_home(articles):
   </div>
 </section>
 """
-    ld = json.dumps({"@context": "https://schema.org", "@type": "MobileApplication",
-                     "name": SITE_NAME, "alternateName": "שאסי",
-                     "operatingSystem": "iOS, Android",
-                     "applicationCategory": "UtilitiesApplication",
-                     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "ILS"}},
-                    ensure_ascii=False)
+    names = {"name": SITE_NAME, "alternateName": ["שאסי", "SHASI"]}
+    ld = json.dumps({"@context": "https://schema.org", "@graph": [
+        {"@type": "WebSite", "@id": SITE_URL + "/#website", "url": SITE_URL + "/",
+         "inLanguage": "he-IL", **names},
+        {"@type": "Organization", "@id": SITE_URL + "/#org", "url": SITE_URL + "/",
+         "logo": SITE_URL + "/logo.png", "email": CONTACT_EMAIL,
+         "sameAs": [APP_STORE_URL, PLAY_STORE_URL], **names},
+        {"@type": "MobileApplication", **names, "url": SITE_URL + "/",
+         "description": "אפליקציה חינמית לניהול הרכב: לוח טיפולים מותאם לדגם לפי מספר רישוי, ותזכורות לטסט ולביטוח.",
+         "operatingSystem": "iOS, Android",
+         "applicationCategory": "UtilitiesApplication",
+         "publisher": {"@id": SITE_URL + "/#org"},
+         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "ILS"}}]},
+        ensure_ascii=False)
     return layout("Shasi (שאסי) – תזכורות לטיפולים, טסט וביטוח לפי מספר רישוי",
                   "שאסי (Shasi) – אפליקציה חינמית לניהול הרכב: לוח טיפולים מותאם לדגם לפי מספר רישוי, ותזכורות לטסט ולביטוח.",
                   "/", body, f'<script type="application/ld+json">{ld}</script>')
