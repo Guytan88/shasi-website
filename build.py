@@ -58,15 +58,16 @@ def parse_article(path):
     return meta
 
 
-def store_buttons(extra_class=""):
+def store_buttons(extra_class="", lang="he"):
+    small = ("Download on the", "Get it on") if lang == "en" else ("הורידו מ-", "הורידו מ-")
     return f"""<div class="stores {extra_class}">
   <a class="store" href="{APP_STORE_URL}" rel="noopener">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.3 1.2 9.7.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.5-1-2.5-3.8zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg>
-    <span><small>הורידו מ-</small>App Store</span>
+    <span><small>{small[0]}</small>App Store</span>
   </a>
   <a class="store" href="{PLAY_STORE_URL}" rel="noopener">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.6 2.3c-.3.3-.4.7-.4 1.2v17c0 .5.1.9.4 1.2l9.5-9.7-9.5-9.7zm10.6 10.8 2.7 2.8-11.4 6.5c-.3.2-.7.2-1 .1l9.7-9.4zm0-2.2L4.5 1.5c.3-.1.7-.1 1 .1l11.4 6.5-2.7 2.8zm3.9-1.6 3 1.7c.9.5.9 1.4 0 1.9l-3 1.7-3-3 3-2.3z"/></svg>
-    <span><small>הורידו מ-</small>Google Play</span>
+    <span><small>{small[1]}</small>Google Play</span>
   </a>
 </div>"""
 
@@ -82,10 +83,33 @@ def cta_box(title="רוצים שמישהו יזכור את זה בשבילכם?"
 </aside>"""
 
 
-def layout(title, description, path, body, extra_head="", og_type="website"):
+def layout(title, description, path, body, extra_head="", og_type="website", lang="he"):
     url = SITE_URL + path
+    en = lang == "en"
+    if en:
+        nav = f"""<a href="/vin-check">Free VIN check</a>
+      <a class="nav-cta" href="{APP_STORE_URL}" rel="noopener">Get the app</a>"""
+        foot_nav = f"""<a href="/vin-check">VIN check</a>
+      <a href="/privacy">Privacy (Hebrew)</a>
+      <a href="mailto:{CONTACT_EMAIL}">Contact</a>"""
+        tagline = "Shasi – maintenance, registration and insurance reminders for your car."
+        fine = f"Information on this site is general and doesn't replace your owner's manual or a licensed mechanic. © {date.today().year} Shasi"
+        home = "/vin-check"
+    else:
+        nav = """<a href="/car-check">בדיקת רכב</a>
+      <a href="/blog">מדריכים</a>
+      <a href="/about">על Shasi</a>
+      <a class="nav-cta" href="/#download">הורדה חינם</a>"""
+        foot_nav = f"""<a href="/car-check">בדיקת רכב לפי מספר רישוי</a>
+      <a href="/blog">מדריכים</a>
+      <a href="/about">על Shasi</a>
+      <a href="/privacy">מדיניות פרטיות</a>
+      <a href="mailto:{CONTACT_EMAIL}">צור קשר</a>"""
+        tagline = "שאסי – תזכורות לטיפולים, טסט וביטוח – לפי מספר הרישוי."
+        fine = f"המידע באתר הוא כללי ואינו מחליף את הוראות היצרן, משרד התחבורה או מוסך מורשה. © {date.today().year} Shasi"
+        home = "/"
     return f"""<!doctype html>
-<html lang="he" dir="rtl">
+<html lang="{'en' if en else 'he'}" dir="{'ltr' if en else 'rtl'}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -97,7 +121,7 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(description)}">
 <meta property="og:url" content="{url}">
-<meta property="og:locale" content="he_IL">
+<meta property="og:locale" content="{'en_US' if en else 'he_IL'}">
 <meta property="og:site_name" content="{SITE_NAME}">
 <meta property="og:image" content="{SITE_URL}/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -118,13 +142,11 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <body>
 <header class="topbar">
   <div class="wrap topbar-inner">
-    <a class="brand" href="/" aria-label="Shasi – דף הבית">
+    <a class="brand" href="{home}" aria-label="Shasi">
       <img src="/logo.png" alt="" width="36" height="36"><span>SHASI</span>
     </a>
     <nav>
-      <a href="/blog">מדריכים</a>
-      <a href="/about">על Shasi</a>
-      <a class="nav-cta" href="/#download">הורדה חינם</a>
+      {nav}
     </nav>
   </div>
 </header>
@@ -134,17 +156,14 @@ def layout(title, description, path, body, extra_head="", og_type="website"):
 <footer class="footer">
   <div class="wrap footer-inner">
     <div>
-      <a class="brand" href="/"><img src="/logo.png" alt="" width="32" height="32"><span>SHASI</span></a>
-      <p>שאסי – תזכורות לטיפולים, טסט וביטוח – לפי מספר הרישוי.</p>
+      <a class="brand" href="{home}"><img src="/logo.png" alt="" width="32" height="32"><span>SHASI</span></a>
+      <p>{tagline}</p>
     </div>
     <nav>
-      <a href="/blog">מדריכים</a>
-      <a href="/about">על Shasi</a>
-      <a href="/privacy">מדיניות פרטיות</a>
-      <a href="mailto:{CONTACT_EMAIL}">צור קשר</a>
+      {foot_nav}
     </nav>
   </div>
-  <p class="wrap fineprint">המידע באתר הוא כללי ואינו מחליף את הוראות היצרן, משרד התחבורה או מוסך מורשה. © {date.today().year} Shasi</p>
+  <p class="wrap fineprint">{fine}</p>
 </footer>
 </body>
 </html>
@@ -230,6 +249,13 @@ def render_home(articles):
       <div class="phone front"><img src="/app-dashboard.jpg" alt="מסך הרכב באפליקציית Shasi: טסט, ביטוח, צמיגים, מצבר ולוח טיפולים" loading="eager"></div>
     </div>
   </div>
+</section>
+
+<section class="wrap tool-promo">
+  <a class="tool-promo-box" href="/car-check">
+    <div><strong>בדיקת רכב לפי מספר רישוי – חינם</strong><p>מתי הטסט הבא, כמה יד, ק"מ בטסט האחרון וריקולים פתוחים. ישירות ממאגרי משרד התחבורה.</p></div>
+    <span class="btn">לבדיקה ←</span>
+  </a>
 </section>
 
 <section class="showcase wrap">
@@ -397,6 +423,116 @@ def render_privacy():
     return layout(f"מדיניות פרטיות | {SITE_NAME}", "מדיניות הפרטיות של Shasi: אילו נתונים נאספים, למה משתמשים בהם, עם מי הם משותפים וכיצד לממש את זכויותיכם.", "/privacy", body)
 
 
+def faq_block(faq, title):
+    items = "\n".join(f"<details><summary>{esc(q['q'])}</summary><p>{q['a']}</p></details>" for q in faq)
+    ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+                     "mainEntity": [{"@type": "Question", "name": q["q"],
+                                     "acceptedAnswer": {"@type": "Answer", "text": re.sub("<[^>]+>", "", q["a"])}}
+                                    for q in faq]}, ensure_ascii=False)
+    return (f'<section class="faq"><h2>{esc(title)}</h2>{items}</section>',
+            f'<script type="application/ld+json">{ld}</script>')
+
+
+def tool_ld(name, path, description, lang):
+    return json.dumps({"@context": "https://schema.org", "@type": "WebApplication",
+                       "name": name, "url": SITE_URL + path, "description": description,
+                       "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
+                       "inLanguage": lang, "isAccessibleForFree": True,
+                       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD" if lang == "en-US" else "ILS"},
+                       "publisher": {"@type": "Organization", "name": SITE_NAME}}, ensure_ascii=False)
+
+
+CAR_CHECK_FAQ = [
+    {"q": "האם בדיקת רכב לפי מספר רישוי עולה כסף?", "a": "לא. הבדיקה כאן חינמית לגמרי, בלי הרשמה. כל הנתונים מגיעים מהמאגרים הפתוחים של משרד התחבורה, שמפרסם אותם לציבור."},
+    {"q": "איך יודעים מתי הטסט הבא של הרכב?", "a": "מכניסים את מספר הרישוי למעלה. תאריך \"תוקף רישיון\" הוא היום האחרון שבו הרכב יכול לנסוע בלי טסט חדש. כדי לקבל תזכורת לפני שהוא מגיע, אפשר להוסיף את הרכב לאפליקציית Shasi."},
+    {"q": "אפשר לראות כמה יד הרכב?", "a": "כן, לרוב. בחלק \"היסטוריית בעלויות\" מופיעה כל העברת בעלות שנרשמה, עם החודש וסוג הבעלות (פרטי, ליסינג, השכרה, סוחר). מעבר דרך סוחר נרשם גם הוא כשורה נפרדת."},
+    {"q": "מה זה ריקול פתוח?", "a": "ריקול (קריאת שירות) הוא תקלה שהיצרן הודיע עליה ומחייבת תיקון. \"פתוח\" אומר שלפי המאגר הרכב הזה עוד לא תוקן. התיקון ניתן בחינם אצל היבואן, ושווה לתאם אותו כמה שיותר מהר."},
+    {"q": "האם רואים כאן תאונות קודמות?", "a": "לא. משרד התחבורה לא מפרסם היסטוריית תאונות. רואים \"שינוי מבנה\" אם נרשם כזה, אבל תאונה שתוקנה בלי שינוי רישום לא מופיעה. לפני קניית רכב, תמיד כדאי <a href=\"/blog/used-car-buying-checklist\">בדיקה במוסך עצמאי</a>."},
+    {"q": "למה הרכב שלי לא נמצא?", "a": "ודאו שהקלדתם רק ספרות. רכבים חדשים מאוד נכנסים למאגר באיחור של כמה שבועות, ורכבים מיוחדים (צבאיים, דיפלומטיים) לא מופיעים בכלל."},
+]
+
+
+def render_car_check():
+    path = "/car-check"
+    desc = "בדיקת רכב לפי מספר רישוי, חינם ובלי הרשמה: מועד הטסט הבא, ק\"מ בטסט האחרון, כמה יד, ריקולים פתוחים, מספר שלדה ומפרט הדגם. ישירות ממאגרי משרד התחבורה."
+    faq_html, faq_ld = faq_block(CAR_CHECK_FAQ, "שאלות נפוצות")
+    head = (f'<script type="application/ld+json">{tool_ld("בדיקת רכב לפי מספר רישוי", path, desc, "he-IL")}</script>\n'
+            f'{faq_ld}\n<script src="/app-promo.js" defer></script>\n<script src="/car-check.js" defer></script>')
+    body = f"""<section class="tool wrap narrow">
+  <h1>בדיקת רכב לפי מספר רישוי</h1>
+  <p class="lead">מכניסים מספר רישוי ורואים מיד מתי הטסט הבא, כמה ק"מ נרשמו בטסט האחרון, כמה יד הרכב ואם יש לו ריקול פתוח. חינם, בלי הרשמה, ישירות ממאגרי משרד התחבורה.</p>
+  <form id="plate-form" class="tool-form" autocomplete="off">
+    <label for="plate-input" class="sr-only">מספר רישוי</label>
+    <div class="plate-field" dir="ltr">
+      <span class="il-flag" aria-hidden="true">IL</span>
+      <input id="plate-input" name="plate" inputmode="numeric" maxlength="10" placeholder="12-345-67" required>
+    </div>
+    <button class="btn" type="submit">בדיקה</button>
+  </form>
+  <div id="plate-result" class="tool-result" aria-live="polite"></div>
+  <template id="store-buttons">{store_buttons("compact")}</template>
+
+  <div class="prose tool-info">
+    <h2>מה רואים בבדיקה</h2>
+    <ul>
+      <li><strong>טסט ורישוי:</strong> תוקף הרישיון (הטסט הבא), תאריך הטסט האחרון, והקילומטראז' שנרשם בו.</li>
+      <li><strong>פרטי הרכב:</strong> יצרן, דגם, שנת ייצור, צבע, סוג דלק, דגם מנוע, מידות צמיגים ומספר שלדה (VIN).</li>
+      <li><strong>היסטוריית בעלויות:</strong> כל העברת בעלות לפי חודש, ואם הרכב היה פרטי, ליסינג, השכרה או אצל סוחר.</li>
+      <li><strong>שינויים שנרשמו:</strong> שינוי מבנה, התקנת גז, שינוי צבע או מידת צמיגים.</li>
+      <li><strong>ריקולים פתוחים:</strong> תקלות שהיצרן הודיע עליהן ועדיין לא תוקנו ברכב הזה, עם הטלפון של היבואן.</li>
+      <li><strong>מפרט הדגם:</strong> כוח סוס, כריות אוויר, רמת אבזור בטיחותי וקבוצת אגרה.</li>
+      <li><strong>סטטוס מיוחד:</strong> רכב שירד מהכביש, יבוא אישי או תג חניה לנכה.</li>
+    </ul>
+    <p>קונים רכב יד שנייה? הבדיקה הזו היא צעד ראשון טוב, אבל לא מחליפה בדיקה במוסך. ראו את <a href="/blog/used-car-buying-checklist">הרשימה המלאה לפני קניית רכב משומש</a>.</p>
+  </div>
+  {faq_html}
+</section>"""
+    return layout(f"בדיקת רכב לפי מספר רישוי – חינם, טסט, יד וריקולים | {SITE_NAME}", desc, path, body, head)
+
+
+VIN_FAQ = [
+    {"q": "Is this VIN check really free?", "a": "Yes. There's no sign-up and no paid report at the end. Everything comes from the free public databases of the U.S. National Highway Traffic Safety Administration (NHTSA)."},
+    {"q": "Where do I find my VIN?", "a": "Look at the bottom corner of the windshield on the driver's side, on the sticker inside the driver's door frame, or on your registration and insurance card. It's always 17 characters."},
+    {"q": "Does this show open recalls for my exact car?", "a": "It shows every recall NHTSA has for your car's make, model and year. Whether your specific car was already repaired is tracked per VIN on NHTSA.gov, and the results page links you straight there. Recall repairs are always free at an authorized dealer."},
+    {"q": "Does a VIN check show accidents or title problems?", "a": "Not this one. Accident, salvage and odometer history come from paid services or from the government-run NMVTIS. Before buying a used car, it's also worth paying for a pre-purchase inspection by an independent mechanic."},
+    {"q": "Why can't my VIN be decoded?", "a": "Usually a typo: VINs never use the letters I, O or Q, so check for a 1, 0 or 9. Cars built before 1981 don't have a standard 17-character VIN."},
+]
+
+
+def render_vin_check():
+    path = "/vin-check"
+    desc = "Free VIN check and decoder: see the year, make, model, engine and safety equipment, every NHTSA recall, crash-test stars and the most-reported owner complaints. No sign-up."
+    faq_html, faq_ld = faq_block(VIN_FAQ, "Frequently asked questions")
+    head = (f'<script type="application/ld+json">{tool_ld("Free VIN Check", path, desc, "en-US")}</script>\n'
+            f'{faq_ld}\n<script src="/app-promo.js" defer></script>\n<script src="/vin-check.js" defer></script>')
+    body = f"""<section class="tool wrap narrow">
+  <h1>Free VIN check</h1>
+  <p class="lead">Enter a 17-character VIN to decode the car and see its recalls, NHTSA crash-test ratings and the problems owners report most. Free, no sign-up, straight from NHTSA.</p>
+  <form id="vin-form" class="tool-form" autocomplete="off">
+    <label for="vin-input" class="sr-only">VIN</label>
+    <input id="vin-input" class="vin-field" name="vin" maxlength="20" placeholder="17-character VIN" autocapitalize="characters" spellcheck="false" required>
+    <button class="btn" type="submit">Check VIN</button>
+  </form>
+  <div id="vin-result" class="tool-result" aria-live="polite"></div>
+  <template id="store-buttons">{store_buttons("compact", "en")}</template>
+
+  <div class="prose tool-info">
+    <h2>What this VIN check shows</h2>
+    <ul>
+      <li><strong>Vehicle details:</strong> year, make, model, trim, body style, engine, transmission, drivetrain and where it was built.</li>
+      <li><strong>Safety equipment:</strong> airbags, stability control, automatic emergency braking, lane and blind-spot warnings.</li>
+      <li><strong>Recalls:</strong> every NHTSA recall for the model year, with what's wrong and how it's fixed.</li>
+      <li><strong>Crash-test ratings:</strong> NHTSA's 5-star overall, frontal, side and rollover scores.</li>
+      <li><strong>Owner complaints:</strong> the components owners report to NHTSA most often for this model.</li>
+    </ul>
+    <h2>How to read a VIN</h2>
+    <p>The first three characters identify the manufacturer and country, characters 4 to 8 describe the model and engine, the 10th is the model year and the last six are the car's serial number. The 9th is a check digit, which is how a decoder spots most typos.</p>
+  </div>
+  {faq_html}
+</section>"""
+    return layout(f"Free VIN Check – Recalls, Specs & Safety Ratings | {SITE_NAME}", desc, path, body, head, lang="en")
+
+
 def render_404():
     body = """<section class="wrap narrow page-head center">
   <h1>הדף לא נמצא</h1>
@@ -427,12 +563,14 @@ def main():
     write("blog/index.html", render_blog(articles))
     write("about/index.html", render_about())
     write("privacy/index.html", render_privacy())
+    write("car-check/index.html", render_car_check())
+    write("vin-check/index.html", render_vin_check())
     write("404.html", render_404())
     for a in articles:
         write(f"blog/{a['slug']}/index.html", render_article(a, by_slug))
 
     today = date.today().isoformat()
-    urls = [("/", today), ("/blog", today), ("/about", today), ("/privacy", today)]
+    urls = [("/", today), ("/car-check", today), ("/vin-check", today), ("/blog", today), ("/about", today), ("/privacy", today)]
     urls += [(f"/blog/{a['slug']}", a["updated"]) for a in articles]
     sm = "".join(f"<url><loc>{SITE_URL}{u}</loc><lastmod>{d}</lastmod></url>" for u, d in urls)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n'
