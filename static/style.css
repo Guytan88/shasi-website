@@ -308,7 +308,6 @@ img { max-width: 100%; display: block; }
 }
 .tool-promo-box strong { font-size: 21px; }
 .tool-promo-box p { margin: 4px 0 0; color: var(--muted); }
-[dir="ltr"] .faq summary::after { float: right; }
 @media (max-width: 560px) {
   .tool h1 { font-size: 30px; }
   .tool-form .btn { flex: 1 1 100%; }
@@ -323,9 +322,6 @@ details.recall summary::after { content: "+"; font-weight: 700; font-size: 20px;
 details.recall[open] summary::after { content: "−"; }
 details.recall summary strong { flex: 1; text-transform: capitalize; }
 details.recall summary .res-note { margin: 0; flex: none; }
-@media (max-width: 560px) {
-  .topbar nav a[href="/vin-check"] { display: none; }
-}
 @media (max-width: 380px) {
   .brand { font-size: 19px; letter-spacing: 1px; }
   .topbar nav { gap: 10px; }

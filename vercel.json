@@ -5,6 +5,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/vin-check",
+      "destination": "https://www.shasi.app/vin-check",
+      "permanent": true
+    },
+    {
       "source": "/review",
       "has": [
         {
